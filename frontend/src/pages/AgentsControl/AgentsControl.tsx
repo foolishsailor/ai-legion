@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import Agent from '../../components/agent';
 import ControlInput from '../../components/controlInput';
 import { AgentsContainer } from '../../layout/agentsContainer';
+import { ControlBarContainer } from '../../layout/controlBarContainer';
 import { ControlContainer } from '../../layout/controlContainer';
 import { PageContainer } from '../../layout/pageContainer';
 import AgentsControlContext from './AgentsControl.context';
@@ -14,6 +15,7 @@ const AgentsControl = () => {
 
   return (
     <PageContainer>
+      <ControlBarContainer></ControlBarContainer>
       <ControlContainer>
         <Grid item container sx={{ flex: 8 }}>
           <Agent agentId={'0'} />
