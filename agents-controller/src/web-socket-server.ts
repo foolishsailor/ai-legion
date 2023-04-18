@@ -1,4 +1,4 @@
-import { createServer, Server as HttpServer } from "http";
+import { createServer } from "http";
 import { Server as IOServer, Socket } from "socket.io";
 import { MessageBus } from "./message-bus";
 import { ControlMessage, messageBuilder } from "./message";
@@ -23,12 +23,12 @@ function webSocketServer(
     console.log("A user connected");
     let testStream: any;
 
+    function generateObjectEveryTwoSeconds(): void {
+      socket.emit("message", generateObject());
+      testStream = setTimeout(generateObjectEveryTwoSeconds, 2000);
+    }
+
     if (test) {
-      function generateObjectEveryTwoSeconds(): void {
-        console.log(generateObject());
-        socket.emit("message", generateObject());
-        testStream = setTimeout(generateObjectEveryTwoSeconds, 2000);
-      }
       generateObjectEveryTwoSeconds();
     }
 
