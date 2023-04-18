@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { Model } from "./openai";
 
 interface CommandLineFlags {
@@ -41,18 +42,18 @@ function processFlags(args: string[]): CommandLineFlags {
         break;
 
       case "help":
-        console.log(`
-Usage: your_script.ts [options]
-
-Options:
-  agents=X                   Set the value of numberOfAgents to X, where X is a number between 1-12
-  model=gpt-3.5-turbo | gpt-4    Set the value of the model to "String", which should match the Message interface
-  test=true|false                Set the test value as a boolean (either "true" or "false")
-  help                           Display this help message and exit
-    `);
+        console.log(
+          chalk.green.bold(` Options:          
+          `) +
+            chalk.green(`
+        agents=X                       Set the value of numberOfAgents to X, where X is a number between 1-12
+        model=gpt-3.5-turbo | gpt-4    Set the value of the model to "String", which should match the Message interface
+        test=true|false                Set the test value as a boolean (either "true" or "false")
+        help                           Display this help message and exit
+    `)
+        );
 
         process.exit();
-        break;
 
       default:
         break;
