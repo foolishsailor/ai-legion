@@ -1,9 +1,9 @@
 import { createServer } from "http";
 import { Server as IOServer, Socket } from "socket.io";
-import { MessageBus } from "./message-bus";
-import { ControlMessage, messageBuilder } from "./message";
-import { generateObject } from "./tests/utils/generateRandomMessage";
-import { test } from "./parameters";
+import { MessageBus } from "../message-bus";
+import { ControlMessage, messageBuilder } from "../message";
+import { generateObject } from "../tests/utils/generateRandomMessage";
+import { test } from "../parameters";
 
 const AGENT_ID = "0";
 

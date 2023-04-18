@@ -6,7 +6,10 @@ export interface Message {
   activeAgents?: string[];
 }
 
+export type ControleMessageType = "message" | "action" | "updateState";
+
 export interface ControlMessage {
+  type: ControleMessageType;
   content: string;
   agentIds?: string[];
 }
