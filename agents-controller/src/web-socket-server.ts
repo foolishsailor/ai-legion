@@ -1,7 +1,7 @@
 import { createServer, Server as HttpServer } from "http";
 import { Server as IOServer, Socket } from "socket.io";
 import { MessageBus } from "./message-bus";
-import { messageBuilder } from "./message";
+import { ControlMessage, messageBuilder } from "./message";
 import { generateObject } from "./tests/utils/generateRandomMessage";
 import { test } from "./parameters";
 
@@ -36,8 +36,14 @@ function webSocketServer(
       socket.emit("message", { ...message, activeAgents: agentIds });
     });
 
-    socket.on("message", (msg: string) => {
-      messageBus.send(messageBuilder.agentToAgent(AGENT_ID, agentIds, msg));
+    socket.on("message", (message: ControlMessage) => {
+      messageBus.send(
+        messageBuilder.agentToAgent(
+          AGENT_ID,
+          message.agentIds || agentIds,
+          message.content
+        )
+      );
     });
 
     socket.on("disconnect", () => {

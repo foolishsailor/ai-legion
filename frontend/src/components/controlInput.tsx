@@ -4,6 +4,10 @@ import AgentsControlContext from '../pages/AgentsControl/AgentsControl.context';
 import socket from '../services/socket';
 
 const ControlInput = () => {
+  const {
+    state: { selectedAgent }
+  } = useContext(AgentsControlContext);
+
   const [inputText, setInputText] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,7 +16,12 @@ const ControlInput = () => {
 
   const handleClick = () => {
     if (inputText.trim()) {
-      if (socket) socket.emit('message', inputText);
+      if (socket)
+        socket.emit('message', {
+          content: inputText,
+          agentIds:
+            selectedAgent && selectedAgent !== '0' ? [selectedAgent] : undefined
+        });
       setInputText('');
     }
   };
@@ -47,7 +56,7 @@ const ControlInput = () => {
           sx={{ label: { color: '#888' } }}
         />
       </Grid>
-      <Grid item sx={{}}>
+      <Grid item>
         <Button
           fullWidth
           variant="contained"

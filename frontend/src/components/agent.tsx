@@ -1,22 +1,35 @@
 import ReactMarkdown from 'react-markdown';
-import { List, ListItem, ListItemText, Typography, Grid } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Grid,
+  useTheme
+} from '@mui/material';
 
 import { Message } from '../types/message';
 import { capitalizeFirstLetter } from '../utils/strings';
 import CommsIndicator from './commsIndicator';
 import AgentsControlContext from '../pages/AgentsControl/AgentsControl.context';
-import { memo, useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 
 interface AgentProps {
   agentId: string;
 }
 
 const Agent = ({ agentId }: AgentProps) => {
+  const theme = useTheme();
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
   const {
-    state: { messages, activeAgents }
+    state: { messages, activeAgents, selectedAgent },
+    dispatch
   } = useContext(AgentsControlContext);
+
+  const handleSelectAgent = () => {
+    dispatch({ field: 'selectedAgent', value: agentId });
+  };
 
   const filteredMessages = messages.filter((message) =>
     message.targetAgentIds.includes(agentId)
@@ -43,8 +56,14 @@ const Agent = ({ agentId }: AgentProps) => {
 
   return (
     <Grid
+      onClick={handleSelectAgent}
       sx={{
-        backgroundColor: '#444',
+        backgroundColor:
+          agentId === selectedAgent
+            ? theme.palette.primary.dark
+            : theme.palette.grey[800],
+        boxShadow:
+          agentId === selectedAgent ? theme.shadows[7] : theme.shadows[2],
         borderRadius: 1,
         display: 'flex',
         width: '100%',
@@ -53,7 +72,7 @@ const Agent = ({ agentId }: AgentProps) => {
         maxHeight:
           agentId === '0'
             ? '80vh'
-            : `calc((100vh - 20px) / ${Math.ceil(
+            : `calc((100vh - 30px) / ${Math.ceil(
                 (activeAgents.length - 1) / 3
               )})`
       }}
@@ -94,6 +113,7 @@ const Agent = ({ agentId }: AgentProps) => {
       >
         {filteredMessages.map((message, idx) => (
           <ListItem
+            key={idx}
             alignItems="flex-start"
             sx={{
               backgroundColor: message.type === 'error' ? '#300105' : '#222',
