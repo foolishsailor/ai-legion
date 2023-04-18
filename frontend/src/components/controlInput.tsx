@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button, Grid } from '@mui/material';
 import socket from '../services/socket';
+import AgentsControlContext from '../pages/AgentsControl/AgentsControl.context';
 
 const ControlInput = () => {
   const {
@@ -17,6 +18,7 @@ const ControlInput = () => {
     if (inputText.trim()) {
       if (socket)
         socket.emit('message', {
+          type: 'message',
           content: inputText,
           agentIds:
             selectedAgent && selectedAgent !== '0' ? [selectedAgent] : undefined
